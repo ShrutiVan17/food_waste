@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshTurn Platform | Food Waste Reduction for Restaurant Chains</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero-top">
+          <div class="brand-lockup">
+            <div class="brand-mark">FT</div>
+            <div>
+              <p>FreshTurn Platform</p>
+              <span>Restaurant inventory, surplus pricing, and food rescue ordering</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <button id="exportReportButton" class="ghost-button" type="button">Export report</button>
+            <button id="resetDemoButton" class="ghost-button" type="button">Reset demo data</button>
+            <button id="toggleMobileNav" class="ghost-button mobile-only" type="button">Menu</button>
+          </div>
+        </div>
+
+        <div class="hero-grid">
+          <section class="hero-copy">
+            <p class="eyebrow">Real-world restaurant workflow</p>
+            <h1>Move expiring food from kitchen inventory to affordable customer pickup.</h1>
+            <p class="hero-text">
+              FreshTurn helps multi-branch restaurant teams reduce food waste, recover revenue,
+              and publish last-hour meal offers that nearby people can actually afford.
+            </p>
+            <div class="hero-badges">
+              <span>Persistent saved data</span>
+              <span>Branch-level closing controls</span>
+              <span>Customer reservation flow</span>
+            </div>
+          </section>
+
+          <section class="hero-panel">
+            <p class="card-label">Demo access</p>
+            <div class="signin-grid">
+              <label>
+                Sign in as
+                <select id="profileSelect"></select>
+              </label>
+              <button id="signInButton" class="primary-button" type="button">Enter dashboard</button>
+            </div>
+            <div class="demo-note">
+              <strong id="activeUserName">Not signed in</strong>
+              <span id="activeUserRole">Choose a demo profile to switch between admin, manager, and customer views.</span>
+            </div>
+          </section>
+        </div>
+      </header>
+
+      <main class="layout">
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar-section">
+            <p class="sidebar-label">Workspace</p>
+            <button class="nav-link active" data-view="overview" type="button">Overview</button>
+            <button class="nav-link" data-view="operations" type="button">Operations</button>
+            <button class="nav-link" data-view="marketplace" type="button">Marketplace</button>
+            <button class="nav-link" data-view="orders" type="button">Reservations</button>
+            <button class="nav-link" data-view="insights" type="button">Insights</button>
+          </div>
+          <div class="sidebar-section sidebar-card">
+            <p class="sidebar-label">Current profile</p>
+            <strong id="sidebarUserName">Guest</strong>
+            <span id="sidebarUserMeta">Sign in to begin.</span>
+          </div>
+        </aside>
+
+        <section class="content">
+          <section class="stats-grid" id="statsGrid"></section>
+
+          <section id="overviewView" class="view active">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Network summary</p>
+                <h2>What is happening across your branches today</h2>
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <section class="panel-card">
+                <div class="card-head">
+                  <h3>Branch status</h3>
+                  <span class="chip">Live operations</span>
+                </div>
+                <div id="branchGrid" class="branch-grid"></div>
+              </section>
+
+              <section class="panel-card">
+                <div class="card-head">
+                  <h3>Tonight's action queue</h3>
+                  <span class="chip accent">Auto-prioritized</span>
+                </div>
+                <div id="actionQueue" class="stack-list"></div>
+              </section>
+            </div>
+
+            <section class="panel-card">
+              <div class="card-head">
+                <h3>Alerts and activity</h3>
+                <span class="chip">Operational feed</span>
+              </div>
+              <div id="alertFeed" class="stack-list"></div>
+            </section>
+          </section>
+
+          <section id="operationsView" class="view">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Operations center</p>
+                <h2>Manage inventory and trigger smart markdowns</h2>
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <form id="inventoryForm" class="panel-card form-panel">
+                <div class="card-head">
+                  <h3>Add inventory item</h3>
+                  <span class="chip">Manager tool</span>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    Branch
+                    <select id="itemBranch" name="itemBranch"></select>
+                  </label>
+                  <label>
+                    Food item
+                    <input id="itemName" name="itemName" type="text" placeholder="Roasted veggie bowl" required />
+                  </label>
+                  <label>
+                    Category
+                    <select id="itemCategory" name="itemCategory" required>
+                      <option value="Prepared meal">Prepared meal</option>
+                      <option value="Bakery">Bakery</option>
+                      <option value="Dessert">Dessert</option>
+                      <option value="Produce">Produce</option>
+                      <option value="Drink">Drink</option>
+                    </select>
+                  </label>
+                  <label>
+                    Quantity
+                    <input id="itemQuantity" name="itemQuantity" type="number" min="1" value="8" required />
+                  </label>
+                  <label>
+                    Price
+                    <input id="itemPrice" name="itemPrice" type="number" min="1" step="0.01" value="9.50" required />
+                  </label>
+                  <label>
+                    Hours to expiry
+                    <input id="itemExpiry" name="itemExpiry" type="number" min="1" value="6" required />
+                  </label>
+                  <label>
+                    Waste risk
+                    <select id="itemRisk" name="itemRisk" required>
+                      <option value="Low">Low</option>
+                      <option value="Medium" selected>Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </label>
+                </div>
+                <button class="primary-button" type="submit">Save inventory item</button>
+              </form>
+
+              <section class="panel-card">
+                <div class="card-head">
+                  <h3>Suggested markdown campaigns</h3>
+                  <span class="chip accent">Closing-mode engine</span>
+                </div>
+                <div id="campaignList" class="stack-list"></div>
+              </section>
+            </div>
+
+            <section class="panel-card">
+              <div class="card-head">
+                <h3>Inventory ledger</h3>
+                <span id="inventoryCount" class="chip">0 items</span>
+              </div>
+              <div id="inventoryTable" class="inventory-table"></div>
+            </section>
+          </section>
+
+          <section id="marketplaceView" class="view">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Customer marketplace</p>
+                <h2>Reserve discounted meals before they are thrown away</h2>
+              </div>
+            </div>
+
+            <div id="marketplaceNotice" class="notice-banner"></div>
+            <section class="panel-card filter-panel">
+              <div class="card-head">
+                <h3>Find affordable meals</h3>
+                <span class="chip accent">Customer filters</span>
+              </div>
+              <div class="filter-grid">
+                <label>
+                  Branch
+                  <select id="filterBranch">
+                    <option value="all">All branches</option>
+                  </select>
+                </label>
+                <label>
+                  Category
+                  <select id="filterCategory">
+                    <option value="all">All categories</option>
+                  </select>
+                </label>
+                <label>
+                  Max price
+                  <select id="filterPrice">
+                    <option value="all">Any price</option>
+                    <option value="5">Up to $5</option>
+                    <option value="8">Up to $8</option>
+                    <option value="10">Up to $10</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+            <div id="dealGrid" class="deal-grid"></div>
+          </section>
+
+          <section id="ordersView" class="view">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Reservation board</p>
+                <h2>Track pickups, customer claims, and recovered sales</h2>
+              </div>
+            </div>
+            <div id="ordersList" class="panel-card stack-list"></div>
+          </section>
+
+          <section id="insightsView" class="view">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Impact analytics</p>
+                <h2>Measure how much waste and lost revenue you prevented</h2>
+              </div>
+            </div>
+
+            <div class="panel-grid">
+              <section class="panel-card">
+                <div class="card-head">
+                  <h3>Branch performance</h3>
+                  <span class="chip">Recovered revenue</span>
+                </div>
+                <div id="branchPerformance" class="chart-list"></div>
+              </section>
+
+              <section class="panel-card">
+                <div class="card-head">
+                  <h3>Why customers use FreshTurn</h3>
+                  <span class="chip accent">Community impact</span>
+                </div>
+                <div class="story-panel">
+                  <p>Families get lower-cost meals, branches clear perishable inventory, and cities see less edible food thrown away.</p>
+                  <ul>
+                    <li>Prioritizes inventory with the shortest remaining shelf life.</li>
+                    <li>Lets managers activate closing mode per branch rather than storewide.</li>
+                    <li>Creates pickup-ready customer reservations without needing a call.</li>
+                    <li>Shows measurable savings that operators can use in weekly reporting.</li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
