@@ -38,3 +38,7 @@ This version is self-contained because no Node.js or Python runtime was availabl
 ## Deployment
 
 Deployment config files for Netlify and Vercel are included, plus [DEPLOY.md](C:\Users\hp\Documents\New project\DEPLOY.md) with hosting steps.
+
+
+## website link
+https://food-waste-git-main-shru-55.vercel.app/
